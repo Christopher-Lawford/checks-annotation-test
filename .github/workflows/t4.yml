@@ -1,0 +1,21 @@
+name: t4-post
+on: pull_request
+permissions:
+  checks: write
+  contents: read
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - run: pip install ruamel.yaml
+      - env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          git show ${{ github.event.pull_request.base.sha }}:.github/scripts/t4_post.py > "$RUNNER_TEMP/t4_post.py"
+          python3 "$RUNNER_TEMP/t4_post.py"
