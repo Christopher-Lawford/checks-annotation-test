@@ -2,7 +2,7 @@ apiVersion: v3.2.0
 kind: DataContract
 id: 00000000-0000-5000-8000-000000000001
 name: dummy_trades
-version: 1.0.0
+version: 1.1.0
 status: active
 domain: dummy
 description:
@@ -31,12 +31,12 @@ schema:
         description: Instrument identifier
         required: true
       - name: quantity
-        logicalType: decimal
-        description: Traded quantity
+        logicalType: double
+        description: Traded quantity (changed)
         required: true
       - name: price
-        logicalType: decimal
-        description: Execution price
+        logicalType: double
+        description: Execution price (changed)
         required: true
       - name: currency
         logicalType: string
