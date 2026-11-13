@@ -1,0 +1,32 @@
+name: t5
+on:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  checks: write
+  statuses: write
+  contents: read
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          flag=$(cat t5flag.txt 2>/dev/null || echo skip)
+          name="T5 Contract Registry: Registration Readiness"
+          echo "flag=$flag sha=$SHA"
+          case "$flag" in
+            pass|fail)
+              concl=$([ "$flag" = pass ] && echo success || echo failure)
+              gh api -X POST repos/$REPO/check-runs -f name="$name" -f head_sha=$SHA -f status=completed -f conclusion=$concl -f 'output[title]=T5 readiness' -f "output[summary]=flag=$flag" ;;
+            status-pass|status-fail)
+              st=$([ "$flag" = status-pass ] && echo success || echo failure)
+              gh api -X POST repos/$REPO/statuses/$SHA -f state=$st -f context="$name" -f description="status flag=$flag" ;;
+            skip) echo "not posting" ;;
+          esac
