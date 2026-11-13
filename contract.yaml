@@ -1,0 +1,67 @@
+apiVersion: v3.2.0
+kind: DataContract
+id: 00000000-0000-5000-8000-000000000001
+name: dummy_trades
+version: 1.0.0
+status: active
+domain: dummy
+description:
+  purpose: Dummy trades contract for annotation tests
+  usage: None
+tags: [test, dummy]
+servers:
+  - server: dev
+    type: databricks
+    catalog: dummy_dev
+    schema: silver
+schema:
+  - name: trades
+    physicalType: table
+    properties:
+      - name: trade_id
+        logicalType: string
+        description: Unique trade identifier
+        required: true
+      - name: portfolio_code
+        logicalType: string
+        description: Portfolio code
+        required: true
+      - name: instrument_id
+        logicalType: string
+        description: Instrument identifier
+        required: true
+      - name: quantity
+        logicalType: decimal
+        description: Traded quantity
+        required: true
+      - name: price
+        logicalType: decimal
+        description: Execution price
+        required: true
+      - name: currency
+        logicalType: string
+        description: ISO currency
+        required: true
+      - name: trade_date
+        logicalType: date
+        description: Trade date
+        required: true
+      - name: settle_date
+        logicalType: date
+        description: Settlement date
+        required: true
+      - name: broker
+        logicalType: string
+        description: Executing broker
+        required: true
+      - name: status
+        logicalType: string
+        description: Trade status
+        required: true
+slaProperties:
+  - property: latency
+    value: 4
+    unit: h
+team:
+  name: dummy-team
+  description: Dummy
