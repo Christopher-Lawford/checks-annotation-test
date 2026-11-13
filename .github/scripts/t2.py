@@ -24,3 +24,5 @@ elif scen=="s3":
     run("T2 s3-onefile-60",[A("c.py",i,f"Q3-{i:03d}") for i in range(1,61)])
 elif scen=="s4":
     run("T2 s4-ordering-80",[A("a.py",i,f"Q4n-{i:03d}","notice") for i in range(1,41)]+[A("b.py",i,f"Q4f-{i:03d}","failure") for i in range(1,41)])
+if scen=="s5":
+    run("T2 s5-reverse-80",[A("b.py",i,f"Q5f-{i:03d}","failure") for i in range(1,41)]+[A("a.py",i,f"Q5n-{i:03d}","notice") for i in range(1,41)])
